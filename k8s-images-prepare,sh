@@ -1,0 +1,38 @@
+#/bin/bash
+
+K8S_TAG=$1
+
+if [ $K8S_TAG == "v1.21.0" ];then
+    ETCD_TAG="3.4.13-0"
+    COREDNS_TAG="v1.8.0"
+    PAUSE_TAG="3.4.1"
+else
+    echo "ERROR: unkown K8S version, exit."
+    exit 1
+fi
+
+docker pull suzeyue/kube-apiserver:$K8S_TAG
+docker pull suzeyue/kube-controller-manager:$K8S_TAG
+docker pull suzeyue/kube-scheduler:$K8S_TAG
+docker pull suzeyue/kube-proxy:$K8S_TAG
+docker pull suzeyue/pause:$PAUSE_TAG
+docker pull suzeyue/etcd:$ETCD_TAG
+docker pull suzeyue/coredns:$COREDNS_TAG
+
+docker tag suzeyue/kube-apiserver:$K8S_TAG          k8s.gcr.io/kube-apiserver:$K8S_TAG
+docker tag suzeyue/kube-controller-manager:$K8S_TAG k8s.gcr.io/kube-controller-manager:$K8S_TAG
+docker tag suzeyue/kube-scheduler:$K8S_TAG          k8s.gcr.io/kube-scheduler:$K8S_TAG
+docker tag suzeyue/kube-proxy:$K8S_TAG              k8s.gcr.io/kube-proxy:$K8S_TAG
+docker tag suzeyue/pause:$PAUSE_TAG                 k8s.gcr.io/pause:$PAUSE_TAG
+docker tag suzeyue/etcd:$ETCD_TAG                   k8s.gcr.io/etcd:$ETCD_TAG
+docker tag suzeyue/coredns:$COREDNS_TAG             k8s.gcr.io/coredns/coredns:$COREDNS_TAG
+
+docker rmi  suzeyue/kube-apiserver:$K8S_TAG \
+            suzeyue/kube-controller-manager:$K8S_TAG \
+            suzeyue/kube-scheduler:$K8S_TAG \
+            suzeyue/kube-proxy:$K8S_TAG \
+            suzeyue/pause:$PAUSE_TAG \
+            suzeyue/etcd:$ETCD_TAG \
+            suzeyue/coredns:$COREDNS_TAG
+
+echo "K8S:$K8S_TAG images are prepared."
