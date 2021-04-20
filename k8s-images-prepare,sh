@@ -2,7 +2,7 @@
 
 K8S_TAG=$1
 
-if [ $K8S_TAG == "v1.21.0" ];then
+if [ tmp$K8S_TAG == "tmpv1.21.0" ];then
     ETCD_TAG="3.4.13-0"
     COREDNS_TAG="v1.8.0"
     PAUSE_TAG="3.4.1"
